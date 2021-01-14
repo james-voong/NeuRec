@@ -45,30 +45,50 @@ if __name__ == "__main__":
         MyClass = getattr(my_module, recommender)
         model = MyClass(sess, dataset, conf)
         '''
+        # userids is an array of userid numbers that we want to predict.
         userids = [
-            [1,0],
-            [2,1],
+            1,
+            2,
+            3,
         ]
 
+        # still trying to understand what these are supposed to be.
         itemids = [
             [18,0],
             [67,1],
         ]
         '''
 
-        
+        '''
         itemids = []
         with open("./dataset/_tmp_ml-100k/ml-100k_ratio_u0_i0.item2id") as csvfile:
             reader = csv.reader(csvfile, delimiter='\t')
             for row in reader:
                 itemids.append(row)
-        
+        '''
+
         model.build_graph()
         sess.run(tf.global_variables_initializer())
         model.train_model()
-        #dumpme = model.evaluate()
 
-        userids = 1
-        #itemids = 18
-        dumpme = model.predict(userids, itemids)
-        pprint(dumpme);
+        # Userids of the user you want to predict.
+        users = [244]
+
+        # Make the predictions.
+        results = model.predict(users);
+
+        for key, value in enumerate(results[0]):
+            print(f"Key is {key} and the value is {value}")
+
+        # We need to get the index for each user to look them up
+        for user_index, user in enumerate(users):
+
+            # This is the user data for each user.
+            user_data = results[user_index]
+
+            # And we need the item index.
+            # Starts from 1 because numpy says so.
+            for item_index, value in enumerate(user_data, start=1):
+
+                #  Using the indexes to work things out, we can list all the scored for each user.
+                print(f"User {user} has score {value} for item {dataset.itemids[item_index]}")

@@ -78,7 +78,7 @@ with tf.Session(config=config) as sess:
     model.predict(userids)
     pprint(model)
 '''
-
+'''
 userids = []
 with open("./dataset/_tmp_ml-100k/ml-100k_ratio_u0_i0.user2id") as csvfile:
     reader = csv.reader(csvfile, delimiter='\t')
@@ -86,3 +86,34 @@ with open("./dataset/_tmp_ml-100k/ml-100k_ratio_u0_i0.user2id") as csvfile:
         userids.append(row)
 
 pprint(userids)
+'''
+
+myarr = [
+    'string1',
+    'string2',
+    'string3',
+    'string4',
+]
+
+for count, value in enumerate(myarr):
+    print(count, value)
+
+for i in range(0, len(myarr)):
+    print(i, myarr[i])
+
+# Make the predictions
+results = model.predict([201])
+
+# We need to get the index for each user to look them up
+for user_index, user in enumerate(users):
+
+    # This is the user data for each user.
+    user_data = results[user_index]
+
+    # And we need the item index.
+    # Unsure if this is right.
+    # Starts from 1 because numpy
+    for item_index, value in enumerate(user_data, start=1):
+
+        # Using the indexes to work things out, we can list all the scored for each user.
+        print(f"User {user} has score {value} for item {dataset.itemids[item_index]}")
