@@ -1,3 +1,5 @@
 *.swp
 env/
 log/
+dataset/completiondata*
+dataset/enrolmentdata*
