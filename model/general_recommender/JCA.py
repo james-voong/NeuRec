@@ -200,6 +200,16 @@ class JCA(AbstractRecommender):
         return np.array(p_input), np.array(n_input)
 
     def predict(self, user_ids, candidate_items_user_ids):
+        feed_dict = {self.input_R_U: self.train_R,
+                    self.input_R_I: self.train_R,
+                    self.input_OH_I: self.I_OH_mat,
+                    self.input_P_cor: [[0, 0]],
+                    self.input_N_cor: [[0, 0]],
+                    self.row_idx: np.reshape(range(self.num_users), (self.num_users, 1)),
+                    self.col_idx: np.reshape(range(self.num_items), (self.num_items, 1))}
+
+        self.all_ratings = self.sess.run(self.Decoder, feed_dict=feed_dict)
+
         ratings = []
         if candidate_items_user_ids is None:
             all_items = np.arange(self.num_items)
